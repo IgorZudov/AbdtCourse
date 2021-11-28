@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace EfPractice
 {
@@ -26,6 +28,9 @@ namespace EfPractice
         {
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(configuration.GetConnectionString("Db")));
+            
+            services.AddMvc();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,14 +46,9 @@ namespace EfPractice
             }
 
             app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-            });
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
