@@ -7,5 +7,7 @@ namespace EfPractice.Entities
         public string Number { get; set; }
 
         public string Name { get; set; }
+
+        public Account Account { get; set; }
     }
 }

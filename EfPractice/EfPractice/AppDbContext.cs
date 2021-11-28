@@ -18,7 +18,7 @@ namespace EfPractice
             modelBuilder.Entity<Account>(a =>
             {
                 a.HasOne(x => x.Card)
-                    .WithOne();
+                    .WithOne(x => x.Account);
                 a.Property(x => x.Number).HasMaxLength(30);
                 a.HasKey(x => x.Id);
             });

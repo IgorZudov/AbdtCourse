@@ -6,6 +6,7 @@ namespace EfPractice.Entities
 
         public string Number { get; set; }
 
+        public long CardId { get; set; }
         public Card Card { get; set; }
     }
 }
