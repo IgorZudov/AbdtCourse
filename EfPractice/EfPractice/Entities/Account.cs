@@ -8,5 +8,7 @@ namespace EfPractice.Entities
 
         public long CardId { get; set; }
         public Card Card { get; set; }
+
+        public string Currency { get; set; }
     }
 }
