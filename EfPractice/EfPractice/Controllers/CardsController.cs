@@ -1,7 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
+using EfPractice.Commands;
 using EfPractice.Entities;
 using EfPractice.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +15,14 @@ namespace EfPractice.Controllers
     {
         private readonly AppDbContext context;
         private readonly IRepository repository;
+        private readonly IMediator mediator;
 
-        public CardsController(AppDbContext context, IRepository repository)
+        public CardsController(AppDbContext context, IRepository repository,
+            IMediator mediator)
         {
             this.context = context;
             this.repository = repository;
+            this.mediator = mediator;
         }
 
         [HttpPost]
@@ -28,11 +33,11 @@ namespace EfPractice.Controllers
         public async Task<ActionResult> UpdateWithExisted([FromBody] Card card, [FromRoute] long id)
         {
             card.Id = id;
-            var existed = await context.FindAsync<Card>(id);
-            var entry = context.Entry(existed);
-            existed.Name = card.Name;
-            existed.Number = card.Number;
-            await context.SaveChangesAsync();
+
+            await mediator.Send(new UpdateCardCommand
+            {
+                Card = card
+            });
             return Ok();
         }
         
