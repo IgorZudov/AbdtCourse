@@ -1,6 +1,8 @@
+using EfPractice.Repositories;
+
 namespace EfPractice.Entities
 {
-    public class Card
+    public class Card : IEntity
     {
         public long Id { get; set; }
 

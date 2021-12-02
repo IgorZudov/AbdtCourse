@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using EfPractice.Repositories;
 
 namespace EfPractice.Entities
 {
-    public class Account
+    public class Account : IEntity
     {
         public long Id { get; set; }
 

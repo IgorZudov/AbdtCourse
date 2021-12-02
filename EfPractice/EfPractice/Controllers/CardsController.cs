@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using EfPractice.Entities;
+using EfPractice.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,20 +12,17 @@ namespace EfPractice.Controllers
     public class CardsController : ControllerBase
     {
         private readonly AppDbContext context;
+        private readonly IRepository repository;
 
-        public CardsController(AppDbContext context)
+        public CardsController(AppDbContext context, IRepository repository)
         {
             this.context = context;
+            this.repository = repository;
         }
 
         [HttpPost]
-        public async Task<ActionResult<long>> Create([FromBody]Card card)
-        {
-            var entry = context.Entry(card);
-            context.Add(card);
-            await context.SaveChangesAsync();
-            return card.Id;
-        }
+        public async Task<ActionResult<long>> Create([FromBody]Card card) =>
+            await repository.Create(card);
 
         [HttpPost("existed/{id:long}")]
         public async Task<ActionResult> UpdateWithExisted([FromBody] Card card, [FromRoute] long id)
