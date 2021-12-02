@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EfPractice.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,9 @@ namespace EfPractice
                     .WithOne(x => x.Account);
                 a.Property(x => x.Number).HasMaxLength(30);
                 a.HasKey(x => x.Id);
+                a.Property(x => x.Fields)
+                    .HasConversion(x => JsonSerializer.Serialize(x, null),
+                        x => JsonSerializer.Deserialize<AccountData>(x, null));
             });
             
             modelBuilder.Entity<Card>(a =>
